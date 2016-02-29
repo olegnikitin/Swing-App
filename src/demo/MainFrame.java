@@ -57,14 +57,22 @@ public class MainFrame extends JFrame {
         }
     }
     
-    private void searchPerson(JTextField field) {
+    private void searchPerson() {
         personTable.clearSelection();
         personTable.addColumnSelectionInterval(0, 1);
-        String textValue = field.getText().toLowerCase();
-        if(field == dateTextField) {//add routes for textFields
-            searchPersonByDate(textValue);
-        } else {
-            searchPersonByName(textValue);
+        searchingBranches();
+    }
+
+    private void searchingBranches() {
+        String dateText = dateTextField.getText();
+        String nameText = nameTextField.getText();
+        if(!dateText.equals("") && !nameText.equals("")) { //should add more complicated conditions
+            searchPersonByDate(dateText);
+            searchPersonByName(nameText);
+        } else if(!nameText.equals("")) {
+            searchPersonByName(nameText);
+        } else if(!dateText.equals("")) {
+            searchPersonByDate(dateText);
         }
     }
 
@@ -89,21 +97,17 @@ public class MainFrame extends JFrame {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
-                searchPerson(field);
+                searchPerson();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                if (!field.getText().equals("")) {
-                    searchPerson(field);
-                } else {
-                    personTable.clearSelection();
-                }
+                searchPerson();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                searchPerson(field);
+                searchPerson();
             }
         };
     }
