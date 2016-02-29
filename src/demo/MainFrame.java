@@ -1,8 +1,6 @@
 package demo;
 
 import demo.person.Person;
-import demo.person.PersonSearch;
-import demo.person.PersonSearchImpl;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
