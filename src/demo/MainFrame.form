@@ -24,13 +24,13 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelPersonTable" pref="400" max="32767" attributes="0"/>
+          <Component id="panelPersonTable" pref="567" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="searchByNameLabel" alignment="0" pref="196" max="32767" attributes="0"/>
-                  <Component id="nameTextField" alignment="0" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="nameTextField" max="32767" attributes="0"/>
+                  <Component id="searchByNameLabel" pref="248" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="dateTextField" max="32767" attributes="0"/>
                   <Component id="searchByDateOfBirthLabel" max="32767" attributes="0"/>
@@ -42,7 +42,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="searchByNameLabel" pref="23" max="32767" attributes="0"/>
+                  <Component id="searchByNameLabel" max="32767" attributes="0"/>
                   <Component id="searchByDateOfBirthLabel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -72,13 +72,19 @@
         <Component class="javax.swing.JTable" name="personTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="2" rowCount="0">
-                <Column editable="false" title="Name" type="java.lang.String"/>
+              <Table columnCount="3" rowCount="0">
+                <Column editable="false" title="First name" type="java.lang.String"/>
+                <Column editable="false" title="Last Name" type="java.lang.String"/>
                 <Column editable="false" title="Date of birth" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="3">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
@@ -105,12 +111,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="searchByNameLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search by name"/>
+        <Property name="text" type="java.lang.String" value="Search on persons&apos; fields"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="searchByDateOfBirthLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search by date of birth"/>
+        <Property name="text" type="java.lang.String" value="Search by year of birth"/>
       </Properties>
     </Component>
   </SubComponents>

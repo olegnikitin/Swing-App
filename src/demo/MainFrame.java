@@ -14,10 +14,10 @@ import java.util.List;
 public class MainFrame extends JFrame {
     
     private final List<Person> persons = Arrays.asList(
-            new Person(0, "Oleg", new Date(725587200000L)),    //29 Dec 1992 00:00:00 GMT
-            new Person(1, "John", new Date(946684800000L)),    //01 Jan 2000 00:00:00 GMT
-            new Person(2, "Jonnny", new Date(694224000000L)),  //01 Jan 1992 00:00:00 GMT
-            new Person(3, "Olga", new Date(978307200000L)));   //01 Jan 2001 00:00:00 GMT
+            new Person(0, "Oleg", "Nikitin", new Date(725587200000L)),      //29 Dec 1992 00:00:00 GMT
+            new Person(1, "John", "Hopkins", new Date(946684800000L)),      //01 Jan 2000 00:00:00 GMT
+            new Person(2, "Jonnny", "Woo", new Date(694224000000L)),        //01 Jan 1992 00:00:00 GMT
+            new Person(3, "Olga", "Tkachenko", new Date(978307200000L)));   //01 Jan 2001 00:00:00 GMT
     private final Map<Person, String> modelsWithYearOfBirth = new HashMap<>();
 
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy");
@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
         DefaultTableModel model = (DefaultTableModel)personTable.getModel();
         for(Person person : persons) {
             modelsWithYearOfBirth.put(person, dateFormatter.format(person.getDateOfBirth()));
-            model.addRow(new Object[]{person.getName(), person.getDateOfBirth()});
+            model.addRow(new Object[]{person.getFirstName(), person.getLastName(), person.getDateOfBirth()});
         }
     }
 
@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
     
     private void searchPerson() {
         personTable.clearSelection();
-        personTable.addColumnSelectionInterval(0, 1);
+        personTable.addColumnSelectionInterval(0, 2);
         searchingBranches();
     }
 
@@ -61,7 +61,7 @@ public class MainFrame extends JFrame {
         String dateText = dateTextField.getText();
         String nameText = nameTextField.getText().toLowerCase();
         if(!dateText.equals("") && !nameText.equals("")) {
-            searchByNameAndDate(nameText, dateText);
+            searchByNamesAndDate(nameText, dateText);
         } else if(!nameText.equals("")) {
             searchPersonsByName(nameText);
         } else if(!dateText.equals("")) {
@@ -71,7 +71,9 @@ public class MainFrame extends JFrame {
 
     private void searchPersonsByName(String nameFieldText) {
         for(Person person : modelsWithYearOfBirth.keySet()) {
-            if(person.getName().toLowerCase().startsWith(nameFieldText)) {
+            String firstName = person.getFirstName().toLowerCase();
+            String lastName = person.getLastName().toLowerCase();
+            if(firstName.startsWith(nameFieldText) || lastName.startsWith(nameFieldText)) {
                 Integer personPosition = person.getId();
                 personTable.addRowSelectionInterval(personPosition, personPosition);
             }
@@ -87,12 +89,13 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void searchByNameAndDate(String nameText, String dateText) {
+    private void searchByNamesAndDate(String nameText, String dateText) {
         for(Map.Entry<Person, String> entry : modelsWithYearOfBirth.entrySet()) {
-            boolean isRequiredName = entry.getKey().getName().toLowerCase().startsWith(nameText);
+            boolean isRequiredFirstName = entry.getKey().getFirstName().toLowerCase().startsWith(nameText);
+            boolean isRequiredLastName = entry.getKey().getLastName().toLowerCase().startsWith(nameText);
             boolean isRequiredDate = entry.getValue().startsWith(dateText);
 
-            if(isRequiredName && isRequiredDate) {
+            if((isRequiredFirstName || isRequiredLastName) && isRequiredDate) {
                 Integer personPosition = entry.getKey().getId();
                 personTable.addRowSelectionInterval(personPosition, personPosition);
             }
@@ -140,14 +143,14 @@ public class MainFrame extends JFrame {
 
             },
             new String [] {
-                "Name", "Date of birth"
+                "First name", "Last Name", "Date of birth"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -165,22 +168,23 @@ public class MainFrame extends JFrame {
         if (personTable.getColumnModel().getColumnCount() > 0) {
             personTable.getColumnModel().getColumn(0).setResizable(false);
             personTable.getColumnModel().getColumn(1).setResizable(false);
+            personTable.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        searchByNameLabel.setText("Search by name");
+        searchByNameLabel.setText("Search on persons' fields");
 
-        searchByDateOfBirthLabel.setText("Search by date of birth");
+        searchByDateOfBirthLabel.setText("Search by year of birth");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPersonTable, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(panelPersonTable, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(searchByNameLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(nameTextField)
+                    .addComponent(searchByNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateTextField)
                     .addComponent(searchByDateOfBirthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -189,7 +193,7 @@ public class MainFrame extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchByNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(searchByNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(searchByDateOfBirthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
