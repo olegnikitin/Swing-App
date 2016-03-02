@@ -71,9 +71,9 @@ public class MainFrame extends JFrame {
 
     private void searchPersonsByName(String nameFieldText) {
         for(Person person : modelsWithYearOfBirth.keySet()) {
-            String firstName = person.getFirstName().toLowerCase();
-            String lastName = person.getLastName().toLowerCase();
-            if(firstName.startsWith(nameFieldText) || lastName.startsWith(nameFieldText)) {
+            boolean firstNameMatches = person.getFirstName().toLowerCase().startsWith(nameFieldText);
+            boolean lastNameMatches = person.getLastName().toLowerCase().startsWith(nameFieldText);
+            if(firstNameMatches || lastNameMatches) {
                 Integer personPosition = person.getId();
                 personTable.addRowSelectionInterval(personPosition, personPosition);
             }
@@ -91,11 +91,11 @@ public class MainFrame extends JFrame {
 
     private void searchByNamesAndDate(String nameText, String dateText) {
         for(Map.Entry<Person, String> entry : modelsWithYearOfBirth.entrySet()) {
-            boolean isRequiredFirstName = entry.getKey().getFirstName().toLowerCase().startsWith(nameText);
-            boolean isRequiredLastName = entry.getKey().getLastName().toLowerCase().startsWith(nameText);
-            boolean isRequiredDate = entry.getValue().startsWith(dateText);
+            boolean firstNameMatches = entry.getKey().getFirstName().toLowerCase().startsWith(nameText);
+            boolean lastNameMatches = entry.getKey().getLastName().toLowerCase().startsWith(nameText);
+            boolean dateMatches = entry.getValue().startsWith(dateText);
 
-            if((isRequiredFirstName || isRequiredLastName) && isRequiredDate) {
+            if((firstNameMatches || lastNameMatches) && dateMatches) {
                 Integer personPosition = entry.getKey().getId();
                 personTable.addRowSelectionInterval(personPosition, personPosition);
             }
